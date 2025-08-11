@@ -1,0 +1,96 @@
+name: Terraform Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      deploy-needed: ${{ env.DEPLOY_NEEDED }}
+      infra-changes: ${{ env.INFRA_CHANGES }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Needed for git diff
+
+      - name: Check infrastructure changes
+        run: |
+          chmod +x ./scripts/check-infra-changes.sh
+          ./scripts/check-infra-changes.sh
+
+  release:
+    runs-on: ubuntu-latest
+    needs: check-changes
+    if: needs.check-changes.outputs.deploy-needed == 'true'
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run release
+
+  deploy-all:
+    runs-on: ubuntu-latest
+    needs: [check-changes, release]
+    if: needs.check-changes.outputs.deploy-needed == 'true'
+    env:
+      AWS_REGION: eu-north-1
+      TF_VAR_aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+      TF_VAR_github_repository_owner: ${{ github.repository_owner }}
+      TF_VAR_infrastructure_s3_bucket_name: ${{ secrets.INFRASTRUCTURE_S3_BUCKET_NAME }}
+      TF_VAR_dynamodb_table_name: ${{ secrets.DYNAMODB_TABLE_NAME }}
+      TF_VAR_kms_key_alias: ${{ secrets.KMS_KEY_ALIAS }}
+      TF_VAR_ecr_repository_name: ${{ secrets.ECR_REPOSITORY_NAME }}
+      TF_VAR_resource_owner_tag: ${{ secrets.RESOURCE_OWNER_TAG }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.INFRASTRUCTURE_DEPLOY_ROLE_NAME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.5.0"
+
+      - name: Deploy all Terraform projects
+        run: |
+          chmod +x ./scripts/deploy-all-terraform.sh
+          ./scripts/deploy-all-terraform.sh
+
+      - name: Show infrastructure changes
+        if: needs.check-changes.outputs.infra-changes != ''
+        run: |
+          echo "Infrastructure changes that triggered this deployment:"
+          echo "${{ needs.check-changes.outputs.infra-changes }}"

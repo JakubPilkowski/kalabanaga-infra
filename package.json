@@ -1,0 +1,26 @@
+{
+  "name": "kalabanga-iac",
+  "version": "0.0.0",
+  "description": "Kalabanga Infrastructure as Code (Terraform)",
+  "scripts": {
+    "release": "semantic-release"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^9.2.6",
+    "semantic-release": "^22.0.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JakubPilkowski/kalabanaga-infra.git"
+  },
+  "keywords": [
+    "terraform",
+    "infrastructure",
+    "aws",
+    "iac"
+  ],
+  "author": "Kalabanga Team",
+  "license": "UNLICENSED"
+}
