@@ -24,13 +24,44 @@ jobs:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.INFRASTRUCTURE_DEPLOY_ROLE_NAME }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Get last successful commit hash
+        id: last-commit
+        uses: actions/cache@v3
+        with:
+          path: .last-commit
+          key: last-successful-commit
+          restore-keys: |
+            last-successful-commit
+
       - name: Detect changed Terraform projects
         id: detect
         run: |
-          # Find changed *.tf files inside infra/
-          CHANGED_DIRS=$(git diff --name-only HEAD~1 HEAD | grep '^infra/.*\.tf$' | cut -d/ -f1-3 | sort -u)
-          echo "Changed directories:"
-          echo "$CHANGED_DIRS"
+          # Get current commit hash
+          CURRENT_COMMIT=$(git rev-parse HEAD)
+          echo "Current commit: $CURRENT_COMMIT"
+
+          # Check if we have a last successful commit
+          if [ -f .last-commit/last-commit.txt ]; then
+            LAST_COMMIT=$(cat .last-commit/last-commit.txt)
+            echo "Last successful commit: $LAST_COMMIT"
+            
+            # Compare changes from last successful commit to current
+            if [ "$LAST_COMMIT" != "$CURRENT_COMMIT" ]; then
+              CHANGED_DIRS=$(git diff --name-only $LAST_COMMIT HEAD | grep '^infra/.*\.tf$' | cut -d/ -f1-3 | sort -u)
+              echo "Changed directories since last successful commit:"
+              echo "$CHANGED_DIRS"
+            else
+              echo "No changes since last successful commit"
+              CHANGED_DIRS=""
+            fi
+          else
+            echo "No last successful commit found - deploying all Terraform projects"
+            # Find all Terraform directories
+            CHANGED_DIRS=$(find infra/ -name "*.tf" -type f | cut -d/ -f1-3 | sort -u)
+            echo "All Terraform directories:"
+            echo "$CHANGED_DIRS"
+          fi
+
           echo "dirs=$CHANGED_DIRS" >> $GITHUB_OUTPUT
 
       - name: Deploy changed projects
@@ -44,3 +75,22 @@ jobs:
             terraform apply -input=false -auto-approve
             cd -
           done
+
+      - name: No changes to deploy
+        if: steps.detect.outputs.dirs == ''
+        run: |
+          echo "No Terraform changes detected - skipping deployment"
+
+      - name: Save successful commit hash
+        if: success()
+        run: |
+          mkdir -p .last-commit
+          git rev-parse HEAD > .last-commit/last-commit.txt
+          echo "Saved successful commit: $(cat .last-commit/last-commit.txt)"
+
+      - name: Cache successful commit hash
+        if: success()
+        uses: actions/cache@v3
+        with:
+          path: .last-commit
+          key: last-successful-commit
