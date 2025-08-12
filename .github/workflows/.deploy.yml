@@ -78,6 +78,15 @@ jobs:
             echo "Deploying $dir"
             cd "$dir"
             terraform init -input=false
+            
+            # Import existing S3 bucket if it exists
+            if terraform state list | grep -q "aws_s3_bucket.preview_react_app_bucket"; then
+              echo "S3 bucket already imported"
+            else
+              echo "Importing existing S3 bucket..."
+              terraform import aws_s3_bucket.preview_react_app_bucket preview-react-app-bucket || echo "S3 bucket import failed or bucket doesn't exist"
+            fi
+            
             terraform plan -input=false
             terraform apply -input=false -auto-approve
             cd -

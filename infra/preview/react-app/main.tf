@@ -22,6 +22,8 @@ provider "aws" {
 }
 
 # S3 Bucket for React App
+# IMPORTANT: This bucket already exists and needs to be imported
+# Run: terraform import aws_s3_bucket.preview_react_app_bucket preview-react-app-bucket
 resource "aws_s3_bucket" "preview_react_app_bucket" {
   bucket = "preview-react-app-bucket"
 }
