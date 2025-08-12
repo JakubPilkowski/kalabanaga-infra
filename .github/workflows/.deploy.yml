@@ -18,12 +18,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.INFRASTRUCTURE_DEPLOY_ROLE_NAME }}
-          aws-region: ${{ env.AWS_REGION }}
-
       - name: Get last successful commit hash
         id: last-commit
         uses: actions/cache@v3
@@ -63,6 +57,19 @@ jobs:
           fi
 
           echo "dirs=$CHANGED_DIRS" >> $GITHUB_OUTPUT
+
+      - name: Configure AWS credentials
+        if: steps.detect.outputs.dirs != ''
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.INFRASTRUCTURE_DEPLOY_ROLE_NAME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        if: steps.detect.outputs.dirs != ''
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.5.0"
 
       - name: Deploy changed projects
         if: steps.detect.outputs.dirs != ''
