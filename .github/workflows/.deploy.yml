@@ -1,0 +1,42 @@
+name: Terraform Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  detect-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: eu-north-1
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.INFRASTRUCTURE_DEPLOY_ROLE_NAME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Detect changed Terraform projects
+        id: detect
+        run: |
+          # Find changed *.tf files inside infra/
+          CHANGED_DIRS=$(git diff --name-only HEAD~1 HEAD | grep '^infra/.*\.tf$' | cut -d/ -f1-3 | sort -u)
+          echo "Changed directories:"
+          echo "$CHANGED_DIRS"
+          echo "dirs=$CHANGED_DIRS" >> $GITHUB_OUTPUT
+
+      - name: Deploy changed projects
+        if: steps.detect.outputs.dirs != ''
+        run: |
+          for dir in ${{ steps.detect.outputs.dirs }}; do
+            echo "Deploying $dir"
+            cd "$dir"
+            terraform init -input=false
+            terraform plan -input=false
+            terraform apply -input=false -auto-approve
+            cd -
+          done
