@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_REGION: eu-north-1
+      TF_VAR_aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+      TF_VAR_github_repository: ${{ github.repository }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -78,11 +80,6 @@ jobs:
             echo "Deploying $dir"
             cd "$dir"
             terraform init -input=false
-            
-            # Import existing S3 bucket if it exists
-            echo "Attempting to import existing S3 bucket..."
-            terraform import aws_s3_bucket.preview_react_app_bucket preview-react-app-bucket || echo "S3 bucket import failed - will create new bucket"
-            
             terraform plan -input=false
             terraform apply -input=false -auto-approve
             cd -

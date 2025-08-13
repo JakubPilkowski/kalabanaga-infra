@@ -15,3 +15,12 @@ variable "project_name" {
   type        = string
   default     = "preview-react-app"
 }
+variable "aws_account_id" {
+  description = "AWS account ID"
+  type        = string
+}
+
+variable "github_repository" {
+  description = "GitHub repository"
+  type        = string
+}
