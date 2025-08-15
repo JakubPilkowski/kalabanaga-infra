@@ -40,7 +40,7 @@ resource "aws_iam_policy" "preview_react_app_infrastructure_policy" {
         ]
         Resource = [
           "arn:aws:s3:::kalabanga-iac-bucket",
-          "arn:aws:s3:::kalabanga-iac-bucket/preview/react-app-runner/*"
+          "arn:aws:s3:::kalabanga-iac-bucket/preview/react-app/*"
         ]
       },
       {
@@ -128,8 +128,10 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
         Resource = "arn:aws:cloudfront::*:distribution/*"
         Condition = {
           StringEquals = {
-            "aws:ResourceTag/Name"        = "KalabangaPreviewReactApp"
+            "aws:ResourceTag/Name"        = "kalabanga-preview-react-app"
             "aws:ResourceTag/Environment" = "preview"
+            "aws:ResourceTag/Project"     = "preview-react-app"
+            "aws:ResourceTag/Owner"       = "kalabanga"
           }
         }
       }
