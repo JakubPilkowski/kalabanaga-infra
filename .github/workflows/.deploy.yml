@@ -28,23 +28,23 @@ jobs:
           # Get current and previous commit hashes
           CURRENT_COMMIT=$(git rev-parse HEAD)
           PREVIOUS_COMMIT=$(git rev-parse HEAD~1)
-          
+
           echo "Current commit: $CURRENT_COMMIT"
           echo "Previous commit: $PREVIOUS_COMMIT"
-          
+
           # Compare changes between current and previous commit
           echo "Checking for changes between $PREVIOUS_COMMIT and $CURRENT_COMMIT"
-          
+
           # Get changed files using git diff
           CHANGED_FILES=$(git diff --name-only $PREVIOUS_COMMIT $CURRENT_COMMIT)
           echo "All changed files:"
           echo "$CHANGED_FILES"
-          
+
           # Filter for Terraform files and get directories
           CHANGED_DIRS=$(echo "$CHANGED_FILES" | grep '^infra/.*\.tf$' | cut -d/ -f1-3 | sort -u)
           echo "Changed Terraform directories:"
           echo "$CHANGED_DIRS"
-          
+
           echo "dirs=$CHANGED_DIRS" >> $GITHUB_OUTPUT
 
       - name: Configure AWS credentials

@@ -103,6 +103,14 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
     Version = "2012-10-17"
     Statement = [
       {
+        Sid    = "S3BucketCreation"
+        Effect = "Allow"
+        Action = [
+          "s3:CreateBucket"
+        ]
+        Resource = "arn:aws:s3:::preview-react-app-bucket"
+      },
+      {
         Sid    = "S3AppDeployment"
         Effect = "Allow"
         Action = [
