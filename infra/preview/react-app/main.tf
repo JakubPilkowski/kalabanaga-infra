@@ -188,6 +188,20 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
         Resource = "*"
       },
       {
+        Sid    = "WAFv2WebACLManagement"
+        Effect = "Allow"
+        Action = [
+          "wafv2:CreateWebACL",
+          "wafv2:GetWebACL",
+          "wafv2:UpdateWebACL",
+          "wafv2:DeleteWebACL",
+          "wafv2:ListWebACLs",
+          "wafv2:TagResource",
+          "wafv2:ListTagsForResource"
+        ]
+        Resource = "*"
+      },
+      {
         Sid    = "CloudFrontInvalidation"
         Effect = "Allow"
         Action = [
