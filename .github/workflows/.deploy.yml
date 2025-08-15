@@ -52,15 +52,22 @@ jobs:
             elif [ "$LAST_COMMIT" != "$CURRENT_COMMIT" ]; then
               echo "Checking for changes between $LAST_COMMIT and $CURRENT_COMMIT"
               
-              # Get all changed files
-              CHANGED_FILES=$(git diff --name-only $LAST_COMMIT HEAD)
-              echo "All changed files:"
-              echo "$CHANGED_FILES"
-              
-              # Filter for Terraform files and get directories
-              CHANGED_DIRS=$(echo "$CHANGED_FILES" | grep '^infra/.*\.tf$' | cut -d/ -f1-3 | sort -u)
-              echo "Changed Terraform directories:"
-              echo "$CHANGED_DIRS"
+              # Get all changed files with error handling
+              if CHANGED_FILES=$(git diff --name-only $LAST_COMMIT HEAD 2>&1); then
+                echo "All changed files:"
+                echo "$CHANGED_FILES"
+                
+                # Filter for Terraform files and get directories
+                CHANGED_DIRS=$(echo "$CHANGED_FILES" | grep '^infra/.*\.tf$' | cut -d/ -f1-3 | sort -u)
+                echo "Changed Terraform directories:"
+                echo "$CHANGED_DIRS"
+              else
+                echo "Error running git diff: $CHANGED_FILES"
+                echo "Falling back to deploying all Terraform projects"
+                CHANGED_DIRS=$(find infra/ -name "*.tf" -type f | cut -d/ -f1-3 | sort -u)
+                echo "All Terraform directories:"
+                echo "$CHANGED_DIRS"
+              fi
             else
               echo "No changes since last successful commit"
               CHANGED_DIRS=""
