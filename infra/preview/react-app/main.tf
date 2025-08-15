@@ -131,16 +131,8 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
           "s3:PutReplicationConfiguration",
           "s3:GetEncryptionConfiguration",
           "s3:PutEncryptionConfiguration",
-          "s3:GetBucketNotificationConfiguration",
-          "s3:PutBucketNotificationConfiguration",
           "s3:GetBucketOwnershipControls",
           "s3:PutBucketOwnershipControls",
-          "s3:GetBucketIntelligentTieringConfiguration",
-          "s3:PutBucketIntelligentTieringConfiguration",
-          "s3:GetBucketAnalyticsConfiguration",
-          "s3:PutBucketAnalyticsConfiguration",
-          "s3:GetBucketMetricsConfiguration",
-          "s3:PutBucketMetricsConfiguration",
           "s3:GetBucketObjectLockConfiguration"
         ]
         Resource = "arn:aws:s3:::preview-react-app-bucket"
