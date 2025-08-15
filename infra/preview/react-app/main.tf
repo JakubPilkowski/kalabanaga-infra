@@ -107,8 +107,23 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
         Effect = "Allow"
         Action = [
           "s3:CreateBucket",
+          "s3:PutBucketVersioning",
+          "s3:PutBucketPublicAccessBlock",
+          "s3:PutBucketPolicy",
+          "s3:PutBucketCors",
+          "s3:PutBucketWebsite",
+          "s3:PutBucketEncryption",
+          "s3:PutBucketAcl",
+          "s3:PutBucketTagging",
+          "s3:GetBucketLocation",
+          "s3:GetBucketVersioning",
+          "s3:GetBucketPublicAccessBlock",
           "s3:GetBucketPolicy",
+          "s3:GetBucketCors",
+          "s3:GetBucketWebsite",
+          "s3:GetBucketEncryption",
           "s3:GetBucketAcl",
+          "s3:GetBucketTagging"
         ]
         Resource = "arn:aws:s3:::preview-react-app-bucket"
       },
@@ -126,6 +141,30 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
           "arn:aws:s3:::preview-react-app-bucket",
           "arn:aws:s3:::preview-react-app-bucket/*"
         ]
+      },
+      {
+        Sid    = "CloudFrontDistributionManagement"
+        Effect = "Allow"
+        Action = [
+          "cloudfront:CreateDistribution",
+          "cloudfront:GetDistribution",
+          "cloudfront:UpdateDistribution",
+          "cloudfront:DeleteDistribution",
+          "cloudfront:ListDistributions",
+          "cloudfront:GetDistributionConfig",
+          "cloudfront:UpdateDistributionConfig",
+          "cloudfront:TagResource",
+          "cloudfront:ListTagsForResource"
+        ]
+        Resource = "arn:aws:cloudfront::*:distribution/*"
+        Condition = {
+          StringEquals = {
+            "aws:ResourceTag/Name"        = "kalabanga-preview-react-app"
+            "aws:ResourceTag/Environment" = "preview"
+            "aws:ResourceTag/Project"     = "preview-react-app"
+            "aws:ResourceTag/Owner"       = "kalabanga"
+          }
+        }
       },
       {
         Sid    = "CloudFrontInvalidation"
