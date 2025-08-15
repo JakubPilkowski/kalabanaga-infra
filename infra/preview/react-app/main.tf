@@ -107,6 +107,7 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
         Effect = "Allow"
         Action = [
           "s3:CreateBucket",
+          "s3:DeleteBucket",
           "s3:PutBucketVersioning",
           "s3:PutBucketPublicAccessBlock",
           "s3:PutBucketPolicy",
@@ -170,7 +171,8 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
           "cloudfront:ListDistributions",
           "cloudfront:GetDistributionConfig",
           "cloudfront:TagResource",
-          "cloudfront:ListTagsForResource"
+          "cloudfront:ListTagsForResource",
+          "cloudfront:CreateOriginAccessControl",
         ]
         Resource = "arn:aws:cloudfront::*:distribution/*"
         Condition = {
