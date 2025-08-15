@@ -175,14 +175,14 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
           "cloudfront:CreateOriginAccessControl",
         ]
         Resource = "arn:aws:cloudfront::*:distribution/*"
-        Condition = {
-          StringEquals = {
-            "aws:ResourceTag/Name"        = "kalabanga-preview-react-app"
-            "aws:ResourceTag/Environment" = "preview"
-            "aws:ResourceTag/Project"     = "preview-react-app"
-            "aws:ResourceTag/Owner"       = "kalabanga"
-          }
-        }
+        # Condition = {
+        #   StringEquals = {
+        #     "aws:ResourceTag/Name"        = "kalabanga-preview-react-app"
+        #     "aws:ResourceTag/Environment" = "preview"
+        #     "aws:ResourceTag/Project"     = "preview-react-app"
+        #     "aws:ResourceTag/Owner"       = "kalabanga"
+        #   }
+        # }
       },
       {
         Sid    = "CloudFrontInvalidation"
@@ -193,14 +193,14 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
           "cloudfront:ListInvalidations"
         ]
         Resource = "arn:aws:cloudfront::*:distribution/*"
-        Condition = {
-          StringEquals = {
-            "aws:ResourceTag/Name"        = "kalabanga-preview-react-app"
-            "aws:ResourceTag/Environment" = "preview"
-            "aws:ResourceTag/Project"     = "preview-react-app"
-            "aws:ResourceTag/Owner"       = "kalabanga"
-          }
-        }
+        # Condition = {
+        #   StringEquals = {
+        #     "aws:ResourceTag/Name"        = "kalabanga-preview-react-app"
+        #     "aws:ResourceTag/Environment" = "preview"
+        #     "aws:ResourceTag/Project"     = "preview-react-app"
+        #     "aws:ResourceTag/Owner"       = "kalabanga"
+        #   }
+        # }
       }
     ]
   })
