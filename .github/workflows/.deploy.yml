@@ -127,14 +127,12 @@ jobs:
           echo "No Terraform changes detected - skipping deployment"
 
       - name: Save successful commit hash
-        if: success()
         run: |
           mkdir -p .last-commit
           git rev-parse HEAD > .last-commit/last-commit.txt
           echo "Saved successful commit: $(cat .last-commit/last-commit.txt)"
 
       - name: Cache successful commit hash
-        if: success()
         uses: actions/cache@v3
         with:
           path: .last-commit
