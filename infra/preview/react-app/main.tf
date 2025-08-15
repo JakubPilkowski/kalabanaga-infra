@@ -123,7 +123,8 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
           "s3:GetBucketWebsite",
           "s3:GetBucketEncryption",
           "s3:GetBucketAcl",
-          "s3:GetBucketTagging"
+          "s3:GetBucketTagging",
+          "s3:GetBucketRequestPayment"
         ]
         Resource = "arn:aws:s3:::preview-react-app-bucket"
       },
