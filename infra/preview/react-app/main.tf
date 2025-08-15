@@ -107,7 +107,8 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
         Effect = "Allow"
         Action = [
           "s3:CreateBucket",
-          "s3:GetBucketPolicy"
+          "s3:GetBucketPolicy",
+          "s3:GetBucketAcl",
         ]
         Resource = "arn:aws:s3:::preview-react-app-bucket"
       },
