@@ -94,10 +94,58 @@ resource "aws_iam_role" "preview_react_app_deploy" {
   })
 }
 
+# IAM Policy for React App Deployment (S3 and CloudFront)
+resource "aws_iam_policy" "preview_react_app_deploy_policy" {
+  name        = "ProjectPreviewReactAppDeployPolicy"
+  description = "Policy for React app deployment to S3 and CloudFront"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "S3AppDeployment"
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject",
+          "s3:ListBucket",
+          "s3:PutObjectAcl"
+        ]
+        Resource = [
+          "arn:aws:s3:::preview-react-app-bucket",
+          "arn:aws:s3:::preview-react-app-bucket/*"
+        ]
+      },
+      {
+        Sid    = "CloudFrontInvalidation"
+        Effect = "Allow"
+        Action = [
+          "cloudfront:CreateInvalidation",
+          "cloudfront:GetInvalidation",
+          "cloudfront:ListInvalidations"
+        ]
+        Resource = "arn:aws:cloudfront::*:distribution/*"
+        Condition = {
+          StringEquals = {
+            "aws:ResourceTag/Name"        = "KalabangaPreviewReactApp"
+            "aws:ResourceTag/Environment" = "preview"
+          }
+        }
+      }
+    ]
+  })
+}
+
 # Attach policies to the role
 resource "aws_iam_role_policy_attachment" "preview_react_app_infrastructure_policy_attachment" {
   role       = aws_iam_role.preview_react_app_deploy.name
   policy_arn = aws_iam_policy.preview_react_app_infrastructure_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "preview_react_app_deploy_policy_attachment" {
+  role       = aws_iam_role.preview_react_app_deploy.name
+  policy_arn = aws_iam_policy.preview_react_app_deploy_policy.arn
 }
 
 
