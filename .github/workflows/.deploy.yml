@@ -43,8 +43,16 @@ jobs:
             
             # Compare changes from last successful commit to current
             if [ "$LAST_COMMIT" != "$CURRENT_COMMIT" ]; then
-              CHANGED_DIRS=$(git diff --name-only $LAST_COMMIT HEAD | grep '^infra/.*\.tf$' | cut -d/ -f1-3 | sort -u)
-              echo "Changed directories since last successful commit:"
+              echo "Checking for changes between $LAST_COMMIT and $CURRENT_COMMIT"
+              
+              # Get all changed files
+              CHANGED_FILES=$(git diff --name-only $LAST_COMMIT HEAD)
+              echo "All changed files:"
+              echo "$CHANGED_FILES"
+              
+              # Filter for Terraform files and get directories
+              CHANGED_DIRS=$(echo "$CHANGED_FILES" | grep '^infra/.*\.tf$' | cut -d/ -f1-3 | sort -u)
+              echo "Changed Terraform directories:"
               echo "$CHANGED_DIRS"
             else
               echo "No changes since last successful commit"
