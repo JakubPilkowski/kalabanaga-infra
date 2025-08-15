@@ -164,7 +164,6 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
           "cloudfront:GetDistributionConfig",
           "cloudfront:TagResource",
           "cloudfront:ListTagsForResource",
-          "cloudfront:CreateOriginAccessControl",
         ]
         Resource = "arn:aws:cloudfront::*:distribution/*"
         # Condition = {
@@ -175,6 +174,18 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
         #     "aws:ResourceTag/Owner"       = "kalabanga"
         #   }
         # }
+      },
+      {
+        Sid    = "CloudFrontOriginAccessControl"
+        Effect = "Allow"
+        Action = [
+          "cloudfront:CreateOriginAccessControl",
+          "cloudfront:GetOriginAccessControl",
+          "cloudfront:UpdateOriginAccessControl",
+          "cloudfront:DeleteOriginAccessControl",
+          "cloudfront:ListOriginAccessControls"
+        ]
+        Resource = "*"
       },
       {
         Sid    = "CloudFrontInvalidation"
