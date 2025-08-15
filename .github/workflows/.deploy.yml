@@ -20,82 +20,31 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Fetch all history for git diff operations
-
-      - name: Get last successful commit hash
-        id: last-commit
-        uses: actions/cache@v3
-        with:
-          path: .last-commit
-          key: last-successful-commit
-          restore-keys: |
-            last-successful-commit
+          fetch-depth: 2 # Fetch only current and previous commit
 
       - name: Detect changed Terraform projects
         id: detect
         run: |
-          # Get current commit hash
+          # Get current and previous commit hashes
           CURRENT_COMMIT=$(git rev-parse HEAD)
+          PREVIOUS_COMMIT=$(git rev-parse HEAD~1)
+          
           echo "Current commit: $CURRENT_COMMIT"
-
-          # Check if we have a last successful commit
-          if [ -f .last-commit/last-commit.txt ]; then
-            LAST_COMMIT=$(cat .last-commit/last-commit.txt)
-            echo "Last successful commit: $LAST_COMMIT"
-            
-            # Verify the last commit exists in the current repository
-            if ! git rev-parse --verify $LAST_COMMIT >/dev/null 2>&1; then
-              echo "Warning: Last successful commit $LAST_COMMIT not found in repository"
-              echo "This might be due to force push or repository history rewrite"
-              echo "Deploying all Terraform projects as fallback"
-              CHANGED_DIRS=$(find infra/ -name "*.tf" -type f | cut -d/ -f1-3 | sort -u)
-              echo "All Terraform directories:"
-              echo "$CHANGED_DIRS"
-            elif [ "$LAST_COMMIT" != "$CURRENT_COMMIT" ]; then
-              echo "Checking for changes between $LAST_COMMIT and $CURRENT_COMMIT"
-              
-              # Try to get changes using git diff-tree which is more reliable
-              if CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r $LAST_COMMIT HEAD 2>&1); then
-                echo "All changed files:"
-                echo "$CHANGED_FILES"
-                
-                # Filter for Terraform files and get directories
-                CHANGED_DIRS=$(echo "$CHANGED_FILES" | grep '^infra/.*\.tf$' | cut -d/ -f1-3 | sort -u)
-                echo "Changed Terraform directories:"
-                echo "$CHANGED_DIRS"
-              else
-                echo "Error running git diff-tree: $CHANGED_FILES"
-                echo "Trying alternative method with git diff..."
-                
-                # Fallback to git diff with better error handling
-                if CHANGED_FILES=$(git diff --name-only $LAST_COMMIT HEAD 2>&1); then
-                  echo "All changed files (via git diff):"
-                  echo "$CHANGED_FILES"
-                  
-                  # Filter for Terraform files and get directories
-                  CHANGED_DIRS=$(echo "$CHANGED_FILES" | grep '^infra/.*\.tf$' | cut -d/ -f1-3 | sort -u)
-                  echo "Changed Terraform directories:"
-                  echo "$CHANGED_DIRS"
-                else
-                  echo "Error running git diff: $CHANGED_FILES"
-                  echo "Falling back to deploying all Terraform projects"
-                  CHANGED_DIRS=$(find infra/ -name "*.tf" -type f | cut -d/ -f1-3 | sort -u)
-                  echo "All Terraform directories:"
-                  echo "$CHANGED_DIRS"
-                fi
-              fi
-            else
-              echo "No changes since last successful commit"
-              CHANGED_DIRS=""
-            fi
-          else
-            echo "No last successful commit found - deploying all Terraform projects"
-            # Find all Terraform directories
-            CHANGED_DIRS=$(find infra/ -name "*.tf" -type f | cut -d/ -f1-3 | sort -u)
-            echo "All Terraform directories:"
-            echo "$CHANGED_DIRS"
-          fi
-
+          echo "Previous commit: $PREVIOUS_COMMIT"
+          
+          # Compare changes between current and previous commit
+          echo "Checking for changes between $PREVIOUS_COMMIT and $CURRENT_COMMIT"
+          
+          # Get changed files using git diff
+          CHANGED_FILES=$(git diff --name-only $PREVIOUS_COMMIT $CURRENT_COMMIT)
+          echo "All changed files:"
+          echo "$CHANGED_FILES"
+          
+          # Filter for Terraform files and get directories
+          CHANGED_DIRS=$(echo "$CHANGED_FILES" | grep '^infra/.*\.tf$' | cut -d/ -f1-3 | sort -u)
+          echo "Changed Terraform directories:"
+          echo "$CHANGED_DIRS"
+          
           echo "dirs=$CHANGED_DIRS" >> $GITHUB_OUTPUT
 
       - name: Configure AWS credentials
@@ -127,18 +76,3 @@ jobs:
         if: steps.detect.outputs.dirs == ''
         run: |
           echo "No Terraform changes detected - skipping deployment"
-
-      - name: Save successful commit hash
-        run: |
-          mkdir -p .last-commit
-          git rev-parse HEAD > .last-commit/last-commit.txt
-          echo "Saved successful commit: $(cat .last-commit/last-commit.txt)"
-          echo "Current commit hash: $(git rev-parse HEAD)"
-
-      - name: Cache successful commit hash
-        uses: actions/cache@v3
-        with:
-          path: .last-commit
-          key: last-successful-commit
-          restore-keys: |
-            last-successful-commit
