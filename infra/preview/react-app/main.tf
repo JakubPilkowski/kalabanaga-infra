@@ -112,7 +112,6 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
           "s3:PutBucketPolicy",
           "s3:PutBucketCors",
           "s3:PutBucketWebsite",
-          "s3:PutBucketEncryption",
           "s3:PutBucketAcl",
           "s3:PutBucketTagging",
           "s3:GetBucketLocation",
@@ -121,12 +120,11 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
           "s3:GetBucketPolicy",
           "s3:GetBucketCors",
           "s3:GetBucketWebsite",
-          "s3:GetBucketEncryption",
           "s3:GetBucketAcl",
           "s3:GetBucketTagging",
           "s3:GetBucketRequestPayment",
           "s3:GetBucketLogging",
-          "s3:GetBucketLifecycleConfiguration"
+          "s3:GetLifecycleConfiguration"
         ]
         Resource = "arn:aws:s3:::preview-react-app-bucket"
       },
@@ -155,7 +153,6 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
           "cloudfront:DeleteDistribution",
           "cloudfront:ListDistributions",
           "cloudfront:GetDistributionConfig",
-          "cloudfront:UpdateDistributionConfig",
           "cloudfront:TagResource",
           "cloudfront:ListTagsForResource"
         ]
