@@ -86,7 +86,7 @@ resource "aws_iam_role" "preview_react_app_deploy" {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
           }
           StringLike = {
-            "token.actions.githubusercontent.com:sub" = "repo:${var.github_repository}:preview-app-react"
+            "token.actions.githubusercontent.com:sub" = "repo:${var.github_repository_owner}/preview-app-react:*"
           }
         }
       }

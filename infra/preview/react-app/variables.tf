@@ -20,7 +20,7 @@ variable "aws_account_id" {
   type        = string
 }
 
-variable "github_repository" {
-  description = "GitHub repository"
+variable "github_repository_owner" {
+  description = "GitHub repository owner (username or organization)"
   type        = string
 }
