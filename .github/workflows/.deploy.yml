@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for git diff operations
 
       - name: Get last successful commit hash
         id: last-commit
@@ -131,9 +133,12 @@ jobs:
           mkdir -p .last-commit
           git rev-parse HEAD > .last-commit/last-commit.txt
           echo "Saved successful commit: $(cat .last-commit/last-commit.txt)"
+          echo "Current commit hash: $(git rev-parse HEAD)"
 
       - name: Cache successful commit hash
         uses: actions/cache@v3
         with:
           path: .last-commit
           key: last-successful-commit
+          restore-keys: |
+            last-successful-commit
