@@ -68,11 +68,11 @@ fi
 
 echo "Comparing changes between $BASE_COMMIT and $CURRENT_COMMIT"
 
-# Check if there are changes in the infra folder
-CHANGES=$(git diff --name-only "$BASE_COMMIT" "$CURRENT_COMMIT" | grep "^infra/" || true)
+# Check if there are changes in the infra folder, package.json, or .deploy.yml
+CHANGES=$(git diff --name-only "$BASE_COMMIT" "$CURRENT_COMMIT" | grep -E "^(infra/|package\.json|\.github/workflows/\.deploy\.yml)" || true)
 
 if [ -z "$CHANGES" ]; then
-    print_info "No changes detected in infra folder"
+    print_info "No changes detected in infra folder, package.json, or .deploy.yml"
     print_info "Skipping deployment"
     if [ -n "$GITHUB_ENV" ]; then
         echo "DEPLOY_NEEDED=false" >> $GITHUB_ENV
@@ -80,7 +80,7 @@ if [ -z "$CHANGES" ]; then
     fi
     exit 0
 else
-    print_success "Infrastructure changes detected!"
+    print_success "Infrastructure or workflow changes detected!"
     echo "Changed files:"
     echo "$CHANGES" | sed 's/^/  - /'
     echo ""

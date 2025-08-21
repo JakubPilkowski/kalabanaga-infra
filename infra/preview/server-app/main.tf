@@ -9,10 +9,10 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = var.infrastructure_s3_bucket_name
+    bucket         = "PLACEHOLDER_S3_BUCKET"
     key            = "preview/server-app-runner/terraform.tfstate"
     region         = "eu-north-1"
-    dynamodb_table = var.dynamodb_table_name
+    dynamodb_table = "PLACEHOLDER_DYNAMODB_TABLE"
     encrypt        = true
   }
 }
