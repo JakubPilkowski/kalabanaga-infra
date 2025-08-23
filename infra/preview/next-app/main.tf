@@ -180,7 +180,7 @@ resource "aws_iam_policy" "preview_next_app_deploy_policy" {
           "ecr:CompleteLayerUpload"
         ]
         # Resource = "arn:aws:ecr:eu-north-1:${var.aws_account_id}:repository/${var.ecr_repository_name}"
-        Resource = "arn:aws:ecr:eu-north-1:${var.aws_account_id}:repository/*"
+        Resource = "*"
       },
       {
         Sid    = "ECSManagement"
