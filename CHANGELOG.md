@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.0.2...v1.1.0) (2025-08-23)
+
+
+### Features
+
+* add S3 management permissions to ProjectPreviewNextAppDeployPolicy ([e235cac](https://github.com/JakubPilkowski/kalabanaga-infra/commit/e235cac8e7319e034839b5c8aa8fa2c76d14253c))
+
 ## [1.0.2](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.0.1...v1.0.2) (2025-08-23)
 
 ## [1.0.1](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.0.0...v1.0.1) (2025-08-23)
