@@ -109,7 +109,6 @@ resource "aws_iam_policy" "preview_next_app_deploy_policy" {
           "cloudfront:GetDistributionConfig",
           "cloudfront:TagResource",
           "cloudfront:ListTagsForResource",
-          "cloudfront:CreateInvalidation"
         ]
         Resource = "arn:aws:cloudfront::*:distribution/*"
         Condition = {
@@ -219,7 +218,8 @@ resource "aws_iam_policy" "preview_next_app_deploy_policy" {
         Effect = "Allow"
         Action = [
           "cloudfront:GetDistribution",
-          "cloudfront:ListDistributions"
+          "cloudfront:ListDistributions",
+          "cloudfront:CreateInvalidation"
         ]
         Resource = "*"
       },
