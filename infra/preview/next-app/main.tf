@@ -193,14 +193,14 @@ resource "aws_iam_policy" "preview_next_app_deploy_policy" {
           "ecs:RegisterTaskDefinition"
         ]
         Resource = "*"
-        Condition = {
-          StringEquals = {
-            "aws:ResourceTag/Name"        = "preview-next-app"
-            "aws:ResourceTag/Environment" = "preview"
-            "aws:ResourceTag/Project"     = "preview-next-app"
-            "aws:ResourceTag/Owner"       = var.resource_owner_tag
-          }
-        }
+        # Condition = {
+        #   StringEquals = {
+        #     "aws:ResourceTag/Name"        = "preview-next-app"
+        #     "aws:ResourceTag/Environment" = "preview"
+        #     "aws:ResourceTag/Project"     = "preview-next-app"
+        #     "aws:ResourceTag/Owner"       = var.resource_owner_tag
+        #   }
+        # }
       },
       {
         Sid    = "CloudWatchLogs"
