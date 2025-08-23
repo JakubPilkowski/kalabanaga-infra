@@ -230,6 +230,26 @@ resource "aws_iam_policy" "preview_next_app_deploy_policy" {
           "elasticloadbalancing:DescribeTargetGroups"
         ]
         Resource = "*"
+      },
+      {
+        Sid    = "S3Management"
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject",
+          "s3:ListBucket",
+          "s3:GetBucketLocation",
+          "s3:GetBucketVersioning",
+          "s3:PutBucketVersioning",
+          "s3:GetBucketPolicy",
+          "s3:PutBucketPolicy",
+          "s3:DeleteBucketPolicy"
+        ]
+        Resource = [
+          "arn:aws:s3:::${var.infrastructure_s3_bucket_name}",
+          "arn:aws:s3:::${var.infrastructure_s3_bucket_name}/*"
+        ]
       }
     ]
   })
