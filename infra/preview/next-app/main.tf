@@ -246,10 +246,7 @@ resource "aws_iam_policy" "preview_next_app_deploy_policy" {
           "s3:PutBucketPolicy",
           "s3:DeleteBucketPolicy"
         ]
-        Resource = [
-          "arn:aws:s3:::${var.infrastructure_s3_bucket_name}",
-          "arn:aws:s3:::${var.infrastructure_s3_bucket_name}/*"
-        ]
+        Resource = "*",
       }
     ]
   })
