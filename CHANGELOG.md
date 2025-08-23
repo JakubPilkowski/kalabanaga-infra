@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.1.1...v1.2.0) (2025-08-23)
+
+
+### Features
+
+* add CloudFront invalidation permission to deployment policy ([54fd28c](https://github.com/JakubPilkowski/kalabanaga-infra/commit/54fd28c6e6ad955280a19b54a97975250bdc67b7))
+
 ## [1.1.1](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.1.0...v1.1.1) (2025-08-23)
 
 # [1.1.0](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.0.2...v1.1.0) (2025-08-23)
