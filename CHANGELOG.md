@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.0.0...v1.0.1) (2025-08-23)
+
+
+### Bug Fixes
+
+* add missing CloudFront and ELBv2 permissions for data source access ([3bf7b3c](https://github.com/JakubPilkowski/kalabanaga-infra/commit/3bf7b3c770f5897623228e2b84574197e42ac6a5))
+
 # 1.0.0 (2025-08-21)
 
 
