@@ -215,6 +215,24 @@ resource "aws_iam_policy" "preview_next_app_deploy_policy" {
           "logs:DescribeLogStreams"
         ]
         Resource = "arn:aws:logs:eu-north-1:${var.aws_account_id}:log-group:preview/next-app:*"
+      },
+      {
+        Sid    = "CloudFrontDataAccess"
+        Effect = "Allow"
+        Action = [
+          "cloudfront:GetDistribution",
+          "cloudfront:ListDistributions"
+        ]
+        Resource = "*"
+      },
+      {
+        Sid    = "ELBv2DataAccess"
+        Effect = "Allow"
+        Action = [
+          "elasticloadbalancing:DescribeLoadBalancers",
+          "elasticloadbalancing:DescribeTargetGroups"
+        ]
+        Resource = "*"
       }
     ]
   })
