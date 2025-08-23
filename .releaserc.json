@@ -23,6 +23,5 @@
     "@semantic-release/github"
   ],
   "preset": "angular",
-  "tagFormat": "v${version}",
-  "initialVersion": "0.0.0"
+  "tagFormat": "v${version}"
 }
