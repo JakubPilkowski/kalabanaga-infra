@@ -1,3 +1,10 @@
+## [1.2.6](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.2.5...v1.2.6) (2025-09-09)
+
+
+### Bug Fixes
+
+* add missing .deploy.yml script change ([7aa6cac](https://github.com/JakubPilkowski/kalabanaga-infra/commit/7aa6cac391493de69644a377bf9712e6c85bcc6f))
+
 ## [1.2.5](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.2.4...v1.2.5) (2025-09-09)
 
 
