@@ -218,6 +218,15 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
         #     "aws:ResourceTag/Owner"       = "kalabanga"
         #   }
         # }
+      },
+      {
+        Sid    = "ELBv2DataAccess"
+        Effect = "Allow"
+        Action = [
+          "elasticloadbalancing:DescribeLoadBalancers",
+          "elasticloadbalancing:DescribeTargetGroups"
+        ]
+        Resource = "*"
       }
     ]
   })
