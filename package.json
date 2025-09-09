@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Kalabanga Infrastructure as Code (Terraform)",
   "scripts": {
-    "release": "semantic-release"
+    "release": "node -r dotenv/config node_modules/.bin/semantic-release --no-ci"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
@@ -22,5 +22,8 @@
     "iac"
   ],
   "author": "Kalabanga Team",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "dependencies": {
+    "dotenv": "^17.2.2"
+  }
 }
