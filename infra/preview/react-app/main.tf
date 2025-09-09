@@ -224,7 +224,8 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
         Effect = "Allow"
         Action = [
           "elasticloadbalancing:DescribeLoadBalancers",
-          "elasticloadbalancing:DescribeTargetGroups"
+          "elasticloadbalancing:DescribeTargetGroups",
+          "elasticloadbalancing:DescribeLoadBalancerAttributes"
         ]
         Resource = "*"
       }
