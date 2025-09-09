@@ -1,3 +1,10 @@
+## [1.2.7](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.2.6...v1.2.7) (2025-09-09)
+
+
+### Bug Fixes
+
+* add elbv2 data access for react app deploy ([5d78e70](https://github.com/JakubPilkowski/kalabanaga-infra/commit/5d78e703c4fecfe884789a84f219794d48b50ba0))
+
 ## [1.2.6](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.2.5...v1.2.6) (2025-09-09)
 
 
