@@ -1,3 +1,10 @@
+## [1.2.8](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.2.7...v1.2.8) (2025-09-09)
+
+
+### Bug Fixes
+
+* missing permissions in react app infr ([18c69dd](https://github.com/JakubPilkowski/kalabanaga-infra/commit/18c69dd7b928be143b14c9df27da7b70303d66ac))
+
 ## [1.2.7](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.2.6...v1.2.7) (2025-09-09)
 
 
