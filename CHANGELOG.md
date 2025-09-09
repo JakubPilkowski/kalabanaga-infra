@@ -1,3 +1,10 @@
+## [1.2.5](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.2.4...v1.2.5) (2025-09-09)
+
+
+### Bug Fixes
+
+* move release step after deploy succeed ([63f8a09](https://github.com/JakubPilkowski/kalabanaga-infra/commit/63f8a09effb7e8133a48d19567a200067d120bc1))
+
 ## [1.2.4](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.2.3...v1.2.4) (2025-08-23)
 
 ## [1.2.3](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.2.2...v1.2.3) (2025-08-23)
