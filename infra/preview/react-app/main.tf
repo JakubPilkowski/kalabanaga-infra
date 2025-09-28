@@ -100,16 +100,20 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
   description = "Policy for React app deployment to S3 and CloudFront"
 
   policy = jsonencode(
-    {
+   {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Sid": "CloudfrontConfiguration",
       "Effect": "Allow",
       "Action": [
+        "cloudfront:CreateFunction",
+        "cloudfront:CreateOriginRequestPolicy",
         "cloudfront:GetDistribution",
         "cloudfront:GetOriginAccessControl",
-        "cloudfront:ListTagsForResource"
+        "cloudfront:GetOriginRequestPolicy",
+        "cloudfront:ListTagsForResource",
+        "cloudfront:PublishFunction"
       ],
       "Resource": "*"
     },
@@ -176,7 +180,7 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
       "Resource": "*"
     }
   ]
-} 
+}
   )
 }
 
