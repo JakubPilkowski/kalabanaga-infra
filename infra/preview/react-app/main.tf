@@ -99,138 +99,85 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
   name        = "ProjectPreviewReactAppDeployPolicy"
   description = "Policy for React app deployment to S3 and CloudFront"
 
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid    = "S3BucketCreation"
-        Effect = "Allow"
-        Action = [
-          "s3:CreateBucket",
-          "s3:DeleteBucket",
-          "s3:PutBucketVersioning",
-          "s3:PutBucketPublicAccessBlock",
-          "s3:PutBucketPolicy",
-          "s3:PutBucketCors",
-          "s3:PutBucketWebsite",
-          "s3:PutBucketAcl",
-          "s3:PutBucketTagging",
-          "s3:GetBucketLocation",
-          "s3:GetBucketVersioning",
-          "s3:GetBucketPublicAccessBlock",
-          "s3:GetBucketPolicy",
-          "s3:GetBucketCors",
-          "s3:GetBucketWebsite",
-          "s3:GetBucketAcl",
-          "s3:GetBucketTagging",
-          "s3:GetBucketRequestPayment",
-          "s3:GetBucketLogging",
-          "s3:GetLifecycleConfiguration",
-          "s3:PutLifecycleConfiguration",
-          "s3:GetReplicationConfiguration",
-          "s3:PutReplicationConfiguration",
-          "s3:GetEncryptionConfiguration",
-          "s3:PutEncryptionConfiguration",
-          "s3:GetBucketOwnershipControls",
-          "s3:PutBucketOwnershipControls",
-          "s3:GetBucketObjectLockConfiguration"
-        ]
-        Resource = "arn:aws:s3:::preview-react-app-bucket"
-      },
-      {
-        Sid    = "S3AppDeployment"
-        Effect = "Allow"
-        Action = [
-          "s3:GetObject",
-          "s3:PutObject",
-          "s3:DeleteObject",
-          "s3:ListBucket",
-          "s3:PutObjectAcl"
-        ]
-        Resource = [
-          "arn:aws:s3:::preview-react-app-bucket",
-          "arn:aws:s3:::preview-react-app-bucket/*"
-        ]
-      },
-      {
-        Sid    = "CloudFrontDistributionManagement"
-        Effect = "Allow"
-        Action = [
-          "cloudfront:CreateDistribution",
-          "cloudfront:GetDistribution",
-          "cloudfront:UpdateDistribution",
-          "cloudfront:DeleteDistribution",
-          "cloudfront:ListDistributions",
-          "cloudfront:GetDistributionConfig",
-          "cloudfront:TagResource",
-          "cloudfront:ListTagsForResource",
-        ]
-        Resource = "arn:aws:cloudfront::*:distribution/*"
-        # Condition = {
-        #   StringEquals = {
-        #     "aws:ResourceTag/Name"        = "kalabanga-preview-react-app"
-        #     "aws:ResourceTag/Environment" = "preview"
-        #     "aws:ResourceTag/Project"     = "preview-react-app"
-        #     "aws:ResourceTag/Owner"       = "kalabanga"
-        #   }
-        # }
-      },
-      {
-        Sid    = "CloudFrontOriginAccessControl"
-        Effect = "Allow"
-        Action = [
-          "cloudfront:CreateOriginAccessControl",
-          "cloudfront:GetOriginAccessControl",
-          "cloudfront:UpdateOriginAccessControl",
-          "cloudfront:DeleteOriginAccessControl",
-          "cloudfront:ListOriginAccessControls"
-        ]
-        Resource = "*"
-      },
-      {
-        Sid    = "WAFv2WebACLManagement"
-        Effect = "Allow"
-        Action = [
-          "wafv2:CreateWebACL",
-          "wafv2:GetWebACL",
-          "wafv2:UpdateWebACL",
-          "wafv2:DeleteWebACL",
-          "wafv2:ListWebACLs",
-          "wafv2:TagResource",
-          "wafv2:ListTagsForResource"
-        ]
-        Resource = "*"
-      },
-      {
-        Sid    = "CloudFrontInvalidation"
-        Effect = "Allow"
-        Action = [
-          "cloudfront:CreateInvalidation",
-          "cloudfront:GetInvalidation",
-          "cloudfront:ListInvalidations"
-        ]
-        Resource = "arn:aws:cloudfront::*:distribution/*"
-        # Condition = {
-        #   StringEquals = {
-        #     "aws:ResourceTag/Name"        = "kalabanga-preview-react-app"
-        #     "aws:ResourceTag/Environment" = "preview"
-        #     "aws:ResourceTag/Project"     = "preview-react-app"
-        #     "aws:ResourceTag/Owner"       = "kalabanga"
-        #   }
-        # }
-      },
-      {
-        Sid    = "ELBv2DataAccess"
-        Effect = "Allow"
-        Action = [
-          "elasticloadbalancing:DescribeLoadBalancers",
-          "elasticloadbalancing:DescribeTargetGroups",
-          "elasticloadbalancing:DescribeLoadBalancerAttributes"
-        ]
-        Resource = "*"
-      }
-    ]
-  })
+  policy = jsonencode(
+    {
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudfrontConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetDistribution",
+        "cloudfront:GetOriginAccessControl",
+        "cloudfront:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DynamodbConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:DeleteItem",
+        "dynamodb:GetItem",
+        "dynamodb:PutItem"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticloadbalancingConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "elasticloadbalancing:DescribeLoadBalancerAttributes",
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "elasticloadbalancing:DescribeTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3Configuration",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetAccelerateConfiguration",
+        "s3:GetBucketAcl",
+        "s3:GetBucketCORS",
+        "s3:GetBucketLogging",
+        "s3:GetBucketObjectLockConfiguration",
+        "s3:GetBucketOwnershipControls",
+        "s3:GetBucketPolicy",
+        "s3:GetBucketPublicAccessBlock",
+        "s3:GetBucketRequestPayment",
+        "s3:GetBucketTagging",
+        "s3:GetBucketVersioning",
+        "s3:GetBucketWebsite",
+        "s3:GetEncryptionConfiguration",
+        "s3:GetLifecycleConfiguration",
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:GetReplicationConfiguration",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StsConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "sts:GetCallerIdentity"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Wafv2Configuration",
+      "Effect": "Allow",
+      "Action": [
+        "wafv2:GetWebACL",
+        "wafv2:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+} 
+  )
 }
 
 # Attach policies to the role
