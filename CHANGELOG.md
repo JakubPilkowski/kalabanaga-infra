@@ -1,3 +1,10 @@
+## [1.2.13](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.2.12...v1.2.13) (2025-10-01)
+
+
+### Bug Fixes
+
+* missing preview react app deploy policies ([c4bb403](https://github.com/JakubPilkowski/kalabanaga-infra/commit/c4bb4032f8507633e8b7fba67382ce2081ed0237))
+
 ## [1.2.12](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.2.11...v1.2.12) (2025-10-01)
 
 
