@@ -100,7 +100,7 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
   description = "Policy for React app deployment to S3 and CloudFront"
 
   policy = jsonencode(
-   {
+    {
   "Version": "2012-10-17",
   "Statement": [
     {
@@ -109,11 +109,16 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
       "Action": [
         "cloudfront:CreateFunction",
         "cloudfront:CreateOriginRequestPolicy",
+        "cloudfront:DeleteFunction",
+        "cloudfront:DescribeFunction",
         "cloudfront:GetDistribution",
+        "cloudfront:GetFunction",
         "cloudfront:GetOriginAccessControl",
         "cloudfront:GetOriginRequestPolicy",
         "cloudfront:ListTagsForResource",
-        "cloudfront:PublishFunction"
+        "cloudfront:PublishFunction",
+        "cloudfront:TagResource",
+        "cloudfront:UpdateDistribution"
       ],
       "Resource": "*"
     },
@@ -121,7 +126,6 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
       "Sid": "DynamodbConfiguration",
       "Effect": "Allow",
       "Action": [
-        "dynamodb:DeleteItem",
         "dynamodb:GetItem",
         "dynamodb:PutItem"
       ],
@@ -158,7 +162,8 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
         "s3:GetObject",
         "s3:GetObjectVersion",
         "s3:GetReplicationConfiguration",
-        "s3:ListBucket"
+        "s3:ListBucket",
+        "s3:PutObject"
       ],
       "Resource": "*"
     },
