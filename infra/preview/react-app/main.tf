@@ -181,7 +181,8 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
       "Effect": "Allow",
       "Action": [
         "wafv2:GetWebACL",
-        "wafv2:ListTagsForResource"
+        "wafv2:ListTagsForResource",
+        "wafv2:DeleteWebACL"
       ],
       "Resource": "*"
     }
