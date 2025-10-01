@@ -108,6 +108,7 @@ resource "aws_iam_policy" "preview_react_app_deploy_policy" {
       "Effect": "Allow",
       "Action": [
         "cloudfront:CreateFunction",
+        "cloudfront:CreateInvalidation",
         "cloudfront:CreateOriginRequestPolicy",
         "cloudfront:DeleteFunction",
         "cloudfront:DescribeFunction",
