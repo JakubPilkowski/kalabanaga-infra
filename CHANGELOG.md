@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.2.13...v1.3.0) (2025-10-26)
+
+
+### Features
+
+* start next-app policies attaching for full iac support ([0b20fdc](https://github.com/JakubPilkowski/kalabanaga-infra/commit/0b20fdcb5d73a5e76c08e4972fbaed081ff5bf4e))
+
 ## [1.2.13](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.2.12...v1.2.13) (2025-10-01)
 
 
