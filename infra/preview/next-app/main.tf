@@ -109,6 +109,7 @@ resource "aws_iam_policy" "preview_next_app_deploy_policy" {
           "cloudfront:GetDistributionConfig",
           "cloudfront:TagResource",
           "cloudfront:ListTagsForResource",
+          "cloudfront:CreateInvalidation"
         ]
         Resource = "arn:aws:cloudfront::*:distribution/*"
         Condition = {
@@ -262,11 +263,16 @@ resource "aws_iam_policy" "preview_next_app_deploy_policy" {
         Sid    = "EC2Configuration"
         Effect = "Allow"
         Action = [
+          "ec2:AuthorizeSecurityGroupEgress",
+          "ec2:AuthorizeSecurityGroupIngress",
           "ec2:CreateSecurityGroup",
+          "ec2:DeleteSecurityGroup",
           "ec2:DescribeNetworkInterfaces",
           "ec2:DescribeSecurityGroups",
           "ec2:DescribeVpcAttribute",
-          "ec2:DescribeVpcs"
+          "ec2:DescribeVpcs",
+          "ec2:DescribeVpcs",
+          "ec2:RevokeSecurityGroupEgress"
         ]
         Resource = "*"
       }
