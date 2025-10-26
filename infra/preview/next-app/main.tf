@@ -154,7 +154,10 @@ resource "aws_iam_policy" "preview_next_app_deploy_policy" {
           "elasticloadbalancing:DescribeLoadBalancers",
           "elasticloadbalancing:DescribeTargetGroups",
           "elasticloadbalancing:DescribeListeners",
-          "elasticloadbalancing:DescribeRules"
+          "elasticloadbalancing:DescribeRules",
+          "elasticloadbalancing:DescribeLoadBalancerAttributes",
+          "elasticloadbalancing:DescribeTags",
+          "elasticloadbalancing:DescribeTargetGroupAttributes"
         ]
         Resource = "*"
         Condition = {
@@ -229,7 +232,12 @@ resource "aws_iam_policy" "preview_next_app_deploy_policy" {
         Effect = "Allow"
         Action = [
           "elasticloadbalancing:DescribeLoadBalancers",
-          "elasticloadbalancing:DescribeTargetGroups"
+          "elasticloadbalancing:DescribeTargetGroups",
+          "elasticloadbalancing:DescribeListeners",
+          "elasticloadbalancing:DescribeLoadBalancerAttributes",
+          "elasticloadbalancing:DescribeRules",
+          "elasticloadbalancing:DescribeTags",
+          "elasticloadbalancing:DescribeTargetGroupAttributes"
         ]
         Resource = "*"
       },
@@ -249,6 +257,18 @@ resource "aws_iam_policy" "preview_next_app_deploy_policy" {
           "s3:DeleteBucketPolicy"
         ]
         Resource = "*",
+      },
+       {
+        Sid    = "EC2Configuration"
+        Effect = "Allow"
+        Action = [
+          "ec2:CreateSecurityGroup",
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeVpcAttribute",
+          "ec2:DescribeVpcs"
+        ]
+        Resource = "*"
       }
     ]
   })
