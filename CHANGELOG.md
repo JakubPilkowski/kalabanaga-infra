@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.3.0...v1.3.1) (2025-10-26)
+
+
+### Bug Fixes
+
+* support for security group management of preview next app ([34568f7](https://github.com/JakubPilkowski/kalabanaga-infra/commit/34568f746d455b87a8f902341329aa68b4e8d685))
+
 # [1.3.0](https://github.com/JakubPilkowski/kalabanaga-infra/compare/v1.2.13...v1.3.0) (2025-10-26)
 
 
